@@ -1,0 +1,13 @@
+import { Router } from "express";
+import { authMiddleware, anyRole, ownerOnly } from "../../../shared/middlewares";
+import * as ctrl from "../controller";
+const router = Router();
+router.get(    "/templates",            authMiddleware, anyRole,   ctrl.getTemplates);
+router.post(   "/templates/apply",      authMiddleware, ownerOnly, ctrl.applyTemplate);
+router.patch(  "/onboarding/complete",  authMiddleware, ownerOnly, ctrl.completeOnboarding);
+router.get(    "/:id",                  authMiddleware, anyRole,   ctrl.getById);
+router.patch(  "/:id/profile",          authMiddleware, ownerOnly, ctrl.updateProfile);
+router.patch(  "/:id/settings",         authMiddleware, ownerOnly, ctrl.updateSettings);
+router.patch(  "/:id/reminders",        authMiddleware, ownerOnly, ctrl.updateReminders);
+router.patch(  "/:id/tax",              authMiddleware, ownerOnly, ctrl.updateTax);
+export default router;

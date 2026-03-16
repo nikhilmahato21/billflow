@@ -1,0 +1,10 @@
+import { Router } from "express";
+import { authMiddleware, anyRole, canWrite, ownerOnly } from "../../../shared/middlewares";
+import { checkClientLimit } from "../../../shared/middlewares/planLimits";
+import * as ctrl from "../controller";
+const router = Router();
+router.get(    "/",    authMiddleware, anyRole,  ctrl.list);
+router.post(   "/",    authMiddleware, canWrite,  checkClientLimit, ctrl.create);
+router.patch(  "/:id", authMiddleware, canWrite,  ctrl.update);
+router.delete( "/:id", authMiddleware, ownerOnly, ctrl.remove);
+export default router;
