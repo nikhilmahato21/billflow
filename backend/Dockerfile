@@ -6,6 +6,7 @@ ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 
 WORKDIR /app
 COPY package*.json ./
+COPY prisma.config.ts ./
 COPY prisma ./prisma/
 RUN npm ci
 COPY . .
@@ -21,10 +22,10 @@ ENV NODE_ENV=production
 
 WORKDIR /app
 COPY package*.json ./
+COPY prisma.config.ts ./
 COPY prisma ./prisma/
 RUN npm ci --omit=dev
 COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 
 RUN mkdir -p /app/pdfs
 

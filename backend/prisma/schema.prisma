@@ -1,21 +1,71 @@
 generator client {
-  provider = "prisma-client-js"
+  provider               = "prisma-client"
+  output                 = "../src/generated/prisma"
+  moduleFormat           = "cjs"
+  generatedFileExtension = "ts"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
-enum UserRole { owner staff accountant }
-enum ItemType { product service membership subscription }
-enum InvoiceStatus { draft pending paid overdue }
-enum PaymentMethod { cash upi card online razorpay }
-enum BillingCycle { monthly quarterly annual }
-enum SubscriptionStatus { active paused cancelled }
-enum ReminderStatus { pending sent failed }
-enum ReminderChannel { whatsapp email sms }
-enum PlanType { basic growth pro }
+enum UserRole {
+  owner
+  staff
+  accountant
+}
+
+enum ItemType {
+  product
+  service
+  membership
+  subscription
+}
+
+enum InvoiceStatus {
+  draft
+  pending
+  paid
+  overdue
+}
+
+enum PaymentMethod {
+  cash
+  upi
+  card
+  online
+  razorpay
+}
+
+enum BillingCycle {
+  monthly
+  quarterly
+  annual
+}
+
+enum SubscriptionStatus {
+  active
+  paused
+  cancelled
+}
+
+enum ReminderStatus {
+  pending
+  sent
+  failed
+}
+
+enum ReminderChannel {
+  whatsapp
+  email
+  sms
+}
+
+enum PlanType {
+  basic
+  growth
+  pro
+}
 
 model BusinessTemplate {
   id              String   @id @default(cuid())

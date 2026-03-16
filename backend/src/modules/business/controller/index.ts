@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from "express";
+import type { Prisma } from "../../../generated/prisma/client";
 import { businessService } from "../service";
 import { prisma } from "../../../shared/prisma";
 import { z } from "zod";
@@ -13,13 +14,16 @@ export async function updateProfile(req: Request, res: Response, next: NextFunct
   } catch (e) { next(e); }
 }
 export async function updateSettings(req: Request, res: Response, next: NextFunction) {
-  try { const { settings } = z.object({ settings: z.record(z.unknown()) }).parse(req.body); res.json(await businessService.updateSettings(req.user!.businessId, settings)); } catch (e) { next(e); }
+  try {
+    const { settings } = z.object({ settings: z.record(z.any()) }).parse(req.body);
+    res.json(await businessService.updateSettings(req.user!.businessId, settings as Prisma.InputJsonObject));
+  } catch (e) { next(e); }
 }
 export async function updateReminders(req: Request, res: Response, next: NextFunction) {
-  try { res.json(await businessService.updateReminders(req.user!.businessId, req.body)); } catch (e) { next(e); }
+  try { res.json(await businessService.updateReminders(req.user!.businessId, req.body as Prisma.InputJsonObject)); } catch (e) { next(e); }
 }
 export async function updateTax(req: Request, res: Response, next: NextFunction) {
-  try { res.json(await businessService.updateTax(req.user!.businessId, req.body)); } catch (e) { next(e); }
+  try { res.json(await businessService.updateTax(req.user!.businessId, req.body as Prisma.InputJsonObject)); } catch (e) { next(e); }
 }
 export async function getTemplates(_req: Request, res: Response, next: NextFunction) {
   try { res.json(await prisma.businessTemplate.findMany({ include: { templateItems: true } })); } catch (e) { next(e); }

@@ -1,6 +1,11 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaPg } from "@prisma/adapter-pg";
 
-const prisma = new PrismaClient();
+import { PrismaClient } from "../../generated/prisma/client";
+import { env } from "./env";
+
+const prisma = new PrismaClient({
+  adapter: new PrismaPg({ connectionString: env.DATABASE_URL }),
+});
 
 async function main() {
   console.log("🌱 Seeding business templates...");

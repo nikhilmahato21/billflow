@@ -1,4 +1,5 @@
 import { prisma } from "../../../shared/prisma";
+import type { Prisma } from "../../../generated/prisma/client";
 
 export const businessRepository = {
   async findById(id: string) {
@@ -14,19 +15,19 @@ export const businessRepository = {
     return prisma.business.update({ where: { id }, data });
   },
 
-  async mergeSettingsOverride(id: string, settings: Record<string, unknown>) {
+  async mergeSettingsOverride(id: string, settings: Prisma.InputJsonObject) {
     const biz = await prisma.business.findUnique({ where: { id }, select: { settingsOverride: true } });
-    const merged = { ...(biz?.settingsOverride as object ?? {}), ...settings };
+    const merged = { ...((biz?.settingsOverride as Prisma.JsonObject | null) ?? {}), ...settings } satisfies Prisma.InputJsonObject;
     return prisma.business.update({ where: { id }, data: { settingsOverride: merged } });
   },
 
-  async updateReminderConfig(id: string, config: object) {
+  async updateReminderConfig(id: string, config: Prisma.InputJsonObject) {
     return prisma.business.update({ where: { id }, data: { reminderConfig: config } });
   },
 
-  async mergeTaxSettings(id: string, tax: object) {
+  async mergeTaxSettings(id: string, tax: Prisma.InputJsonObject) {
     const biz = await prisma.business.findUnique({ where: { id }, select: { settingsOverride: true } });
-    const merged = { ...(biz?.settingsOverride as object ?? {}), tax };
+    const merged = { ...((biz?.settingsOverride as Prisma.JsonObject | null) ?? {}), tax } satisfies Prisma.InputJsonObject;
     return prisma.business.update({ where: { id }, data: { settingsOverride: merged } });
   },
 
