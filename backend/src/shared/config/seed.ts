@@ -2,9 +2,14 @@ import { PrismaPg } from "@prisma/adapter-pg";
 
 import { PrismaClient } from "../../generated/prisma/client";
 import { env } from "./env";
+import { pgPool } from "../prisma/connection";
 
 const prisma = new PrismaClient({
-  adapter: new PrismaPg({ connectionString: env.DATABASE_URL }),
+  adapter: new PrismaPg(pgPool),
+  transactionOptions: {
+    maxWait: env.PRISMA_TRANSACTION_MAX_WAIT_MS,
+    timeout: env.PRISMA_TRANSACTION_TIMEOUT_MS,
+  },
 });
 
 async function main() {

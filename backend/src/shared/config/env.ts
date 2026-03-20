@@ -5,6 +5,11 @@ dotenv.config();
 
 const envSchema = z.object({
   DATABASE_URL: z.string().min(1),
+  DATABASE_POOL_MAX: z.coerce.number().int().positive().default(10),
+  DATABASE_POOL_IDLE_TIMEOUT_MS: z.coerce.number().int().positive().default(30_000),
+  DATABASE_POOL_CONNECTION_TIMEOUT_MS: z.coerce.number().int().positive().default(10_000),
+  PRISMA_TRANSACTION_MAX_WAIT_MS: z.coerce.number().int().positive().default(10_000),
+  PRISMA_TRANSACTION_TIMEOUT_MS: z.coerce.number().int().positive().default(15_000),
   REDIS_URL: z.string().default("redis://localhost:6379"),
   JWT_SECRET: z.string().min(32),
   JWT_REFRESH_SECRET: z.string().min(32),
